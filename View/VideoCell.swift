@@ -8,10 +8,6 @@
 
 import UIKit
 
-//protocol reloadDataDelegate {
-//    func updateUI()
-//}
-
 class VideoCell: BaseCell {
     
     var videoItem = Items()
@@ -20,64 +16,6 @@ class VideoCell: BaseCell {
     enum MyKeys: String, CodingKey {
         case thumbnail = "thumbnails"
         case urlString = "url"
-    }
-    
-    var video: Video? {
-        didSet {
-            
-            dump(videoItem)
-//            let videoItem = Items()
-            
-//            if let profile_image_name  =  videoItem.snippet {
-//                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
-//            }
-            
-            if let thumbnailUrlString = videoItem.snippet?.thumbnails?.high?.url {
-                downloadImage(imageType: "videoThumbnail", urlString: thumbnailUrlString)
-            }
-
-            titleLabel.text = videoItem.snippet?.title
-
-            if let channelSubtitle = videoItem.snippet?.description {
-                subTitleTextView.text = channelSubtitle
-            }
-
-            // estimate height for titleLabelText
-            if let title = videoItem.snippet?.title {
-                let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
-                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
-
-                if estimatedRect.size.height > 21 {
-                    titleLabelHeightConstraint?.constant = 44
-                } else {
-                    titleLabelHeightConstraint?.constant = 21
-                }
-                print("estimatedRect:", estimatedRect)
-                titleLabel.text = title
-            }
-            
-            if let channelDescription = videoItem.snippet?.description {
-                let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
-                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-                let estimatedRect = NSString(string: channelDescription).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
-                
-                if estimatedRect.size.height > 21 {
-                    titleLabelHeightConstraint?.constant = 44
-                } else {
-                    titleLabelHeightConstraint?.constant = 21
-                }
-                print("estimatedRect:", estimatedRect)
-                subTitleTextView.text = channelDescription
-            }
-
-            // estimate height for subTitle
-            // estimate height for VideoCell (video+16+titleLabelHeight+8+subTitleLabelHeight+16)
-            
-            if let thumbnailImageUrlString = videoItem.snippet?.thumbnails?.high?.url {
-                downloadImage(imageType: "thumbnail", urlString: thumbnailImageUrlString)
-            }
-        }
     }
     
     var profileImageView: UIImageView = {
@@ -150,31 +88,12 @@ class VideoCell: BaseCell {
         addConstraint(NSLayoutConstraint(item: subTitleTextView, attribute: .right , relatedBy: .equal, toItem: thumbnailImageView, attribute: .right, multiplier: 1, constant: 0))
         addConstraint(NSLayoutConstraint(item: subTitleTextView , attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30))
     }
-    
-    func downloadImage(imageType: String, urlString: String) {
-        if let url = URL(string: urlString) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if error != nil {
-                    print(error!)
-                    return
-                }
-                guard let data = data else { return }
-                
-                DispatchQueue.main.async() {
-                    if imageType == "videoThumbnail" {
-                        self.thumbnailImageView.image = UIImage(data: data)
-                    } else if imageType == "profile_image" {
-                        self.profileImageView.image = UIImage(data: data)
-                    }
-                    self.delegate?.updateUI()
-                }
-            }.resume()
-        }
-    }
-    
 }
 
-////======= backup v1 ======
+
+
+
+////======= backup 4/9/18 ======
 ////
 ////  VideoCell.swift
 ////  AcuDragon
