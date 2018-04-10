@@ -106,7 +106,6 @@ class MenuCell : BaseCell {
 
     let menuImageView : UIImageView = {
         let iv = UIImageView()
-        // iv.image = UIImage(named: "dragon.png")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         iv.tintColor = UIColor.rgb(red: 91, green: 14, blue: 13)
         iv.contentMode = .scaleAspectFit
         return iv

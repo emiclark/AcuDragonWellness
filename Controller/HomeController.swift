@@ -123,7 +123,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         let videoInfo = ApiClient.videosArray.items![indexPath.row]
-//        cell.videoItem = ApiClient.videosArray.items![indexPath.row]
         
         cell.subTitleTextView.text =  videoInfo.channelTitle != nil ?  videoInfo.channelTitle : "AcuDragon Wellness System"
         cell.subTitleTextView.text =  videoInfo.snippet?.description != nil ?  videoInfo.snippet?.description : "AcuDragon Wellness System"
