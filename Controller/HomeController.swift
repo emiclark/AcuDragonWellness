@@ -66,15 +66,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         ApiClient.videosArray = eva
     }
     
-    func startActivityIndicator() {
-        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        self.activityIndicator.color = .blue
-        self.activityIndicator.center = view.center
-        self.activityIndicator.hidesWhenStopped = false
-        self.activityIndicator.startAnimating()
-        view.addSubview(self.activityIndicator)
-    }
-    
     func setupViewController() {
         // Register cell
         self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
@@ -142,15 +133,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return 0
     }
     
-    // MARK:- MenuBar Methods
-    @objc func handleSearch() {
-        print("123")
+    // MARK:- Helper Methods
+    func startActivityIndicator() {
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        self.activityIndicator.color = .blue
+        self.activityIndicator.center = view.center
+        self.activityIndicator.hidesWhenStopped = false
+        self.activityIndicator.startAnimating()
+        view.addSubview(self.activityIndicator)
     }
-    
-    @objc func handleMore() {
-        print("234")
-    }
-    
 }
 
 // MARK:- Extensions
@@ -185,7 +176,6 @@ extension HomeController : reloadDataDelegate {
 //    let apiClient = ApiClient()
 //    let pageNum = 0
 //
-//    // MARK:- View Methods
 //    override func viewWillAppear(_ animated: Bool) {
 //        initializeVideoModelForEmptyState()
 //    }
@@ -199,7 +189,6 @@ extension HomeController : reloadDataDelegate {
 //        self.apiClient.fetchVideos(pageNum: pageNum)
 //    }
 //
-//    // MARK:- Setup/Initialization Methods
 //    func initializeVideoModelForEmptyState() {
 //
 //        // create empty video array for empty state
@@ -276,7 +265,6 @@ extension HomeController : reloadDataDelegate {
 //        view.addConstraintsWithFormat(format: "V:|[v0(50)]", views: menuBar)
 //    }
 //
-//    // MARK:- CollectionView Delegate Methods
 //    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return (ApiClient.videosArray.items?.count)!
 //    }
@@ -316,7 +304,6 @@ extension HomeController : reloadDataDelegate {
 //        return 0
 //    }
 //
-//    // MARK:- MenuBar Methods
 //    @objc func handleSearch() {
 //        print("123")
 //    }
@@ -327,7 +314,6 @@ extension HomeController : reloadDataDelegate {
 //
 //}
 //
-//// MARK:- Extensions
 //extension HomeController : reloadDataDelegate {
 //    func updateUI() {
 //        self.activityIndicator.stopAnimating()

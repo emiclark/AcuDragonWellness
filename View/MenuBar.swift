@@ -96,6 +96,7 @@ class MenuCell : BaseCell {
     override var isSelected: Bool {
         didSet {
             menuImageView.tintColor = isSelected ? UIColor.white : UIColor.rgb(red: 91, green: 14, blue: 13)
+            
         }
     }
 
