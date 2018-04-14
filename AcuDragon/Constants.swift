@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants {
-     static let baseUrlString = "https://www.googleapis.com/youtube/v3/search?key="
-//     static let myAPIKey = "AIzaSyDmqaPH8yJO7uMfTUXz9AKxP5zdb79ym0Q"
-//     static let myECChannel = "UCD5kT8GTKnbYl9WxgnLM0aA"
+    static let baseUrlString = "https://www.googleapis.com/youtube/v3/search?key="
+    static let lightGreyColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 230/255)
+    
 }
 
 

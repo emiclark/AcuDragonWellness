@@ -75,6 +75,22 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // sync menu title and selected cell highlighted
+        
+        let selectedIndexPath = indexPath
+        if selectedIndexPath.row == 0 {
+            collectionview.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition(rawValue: 0))
+            let menuTitleLabel =  menuTitle[selectedIndexPath.row]
+            
+        } else {
+            collectionview.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition(rawValue: 1))
+            let menuTitleLabel =  menuTitle[selectedIndexPath.row]
+        }
+
+        
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

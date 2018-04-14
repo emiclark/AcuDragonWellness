@@ -32,6 +32,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         startActivityIndicator()
         setupViewController()
         self.apiClient.fetchVideos(pageNum: pageNum)
+
     }
     
     // MARK:- Setup/Initialization Methods
@@ -77,9 +78,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
         
-        let navTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
-        navTitleLabel.text = "Home"
-        navTitleLabel.font = UIFont.systemFont(ofSize: 20)
+        let navTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - view.frame.width/3, height: view.frame.height))
+        navTitleLabel.text = "AcuDragon Wellness System"
+//        navTitleLabel.addConstraintsWithFormat(format: "V:|[v0]", views: navTitleLabel)
+        navTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         navTitleLabel.textColor = UIColor.white
         navigationItem.titleView = navTitleLabel
         collectionView?.backgroundColor = UIColor.white
@@ -88,6 +90,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
 
     private func setupMenuBar() {
+        
         view.addSubview(menuBar)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: menuBar)
         view.addConstraintsWithFormat(format: "V:|[v0(50)]", views: menuBar)
@@ -105,10 +108,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         let videoInfo = ApiClient.videosArray.items![indexPath.row]
-//        cell.videoItem = ApiClient.videosArray.items![indexPath.row]
+        dump(videoInfo)
+        cell.videoItem = videoInfo
         
-        cell.subTitleTextView.text =  videoInfo.channelTitle != nil ?  videoInfo.channelTitle : "AcuDragon Wellness System"
-        cell.subTitleTextView.text =  videoInfo.snippet?.description != nil ?  videoInfo.snippet?.description : "AcuDragon Wellness System"
+        cell.titleLabel.text =  cell.videoItem.snippet?.title != nil ?  cell.videoItem.snippet?.title : "AcuDragon Wellness System"
+        
+        cell.subTitleTextView.text =  cell.videoItem.snippet?.description != nil ?  cell.videoItem.snippet?.description : "AcuDragon Wellness System"
         
         apiClient.downloadImage(urlString: (videoInfo.snippet?.thumbnails?.high?.url!)!) { (thumbnailImage) in
             cell.thumbnailImageView.image = thumbnailImage
