@@ -8,10 +8,6 @@
 
 import UIKit
 
-//protocol reloadDataDelegate {
-//    func updateUI()
-//}
-
 class VideoCell: BaseCell {
     
     var videoItem = Items()
@@ -22,63 +18,64 @@ class VideoCell: BaseCell {
         case urlString = "url"
     }
     
-    var video: Video? {
-        didSet {
-            
-            dump(videoItem)
-            let videoItemSnippet = self.videoItem.snippet
-            
-//            if let profile_image_name  =  videoItem.snippet.. {
-//                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
-////            }
-            
-            if let thumbnailUrlString = videoItemSnippet?.thumbnails?.high?.url {
-                downloadImage(imageType: "videoThumbnail", urlString: thumbnailUrlString)
-            }
 
-            titleLabel.text = videoItemSnippet?.title
-
-            if let channelSubtitle = videoItemSnippet?.description {
-                subTitleTextView.text = channelSubtitle
-            }
-
-            // estimate height for titleLabelText
-            if let title = videoItemSnippet?.title {
-                let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
-                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
-
-                if estimatedRect.size.height > 21 {
-                    titleLabelHeightConstraint?.constant = 44
-                } else {
-                    titleLabelHeightConstraint?.constant = 21
-                }
-                print("estimatedRect:", estimatedRect)
-                titleLabel.text = title
-            }
+//     var video: Video? {
+//         didSet {
             
-            if let channelDescription = videoItemSnippet?.description {
-                let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
-                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-                let estimatedRect = NSString(string: channelDescription).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
+//             dump(videoItem)
+//             let videoItemSnippet = self.videoItem.snippet
+            
+// //            if let profile_image_name  =  videoItem.snippet.. {
+// //                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
+// ////            }
+            
+//             if let thumbnailUrlString = videoItemSnippet?.thumbnails?.high?.url {
+//                 downloadImage(imageType: "videoThumbnail", urlString: thumbnailUrlString)
+//             }
+
+//             titleLabel.text = videoItemSnippet?.title
+
+//             if let channelSubtitle = videoItemSnippet?.description {
+//                 subTitleTextView.text = channelSubtitle
+//             }
+
+//             // estimate height for titleLabelText
+//             if let title = videoItemSnippet?.title {
+//                 let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
+//                 let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+//                 let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
+
+//                 if estimatedRect.size.height > 21 {
+//                     titleLabelHeightConstraint?.constant = 44
+//                 } else {
+//                     titleLabelHeightConstraint?.constant = 21
+//                 }
+//                 print("estimatedRect:", estimatedRect)
+//                 titleLabel.text = title
+//             }
+            
+//             if let channelDescription = videoItemSnippet?.description {
+//                 let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
+//                 let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+//                 let estimatedRect = NSString(string: channelDescription).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
                 
-                if estimatedRect.size.height > 21 {
-                    titleLabelHeightConstraint?.constant = 44
-                } else {
-                    titleLabelHeightConstraint?.constant = 21
-                }
-                print("estimatedRect:", estimatedRect)
-                subTitleTextView.text = channelDescription
-            }
+//                 if estimatedRect.size.height > 21 {
+//                     titleLabelHeightConstraint?.constant = 44
+//                 } else {
+//                     titleLabelHeightConstraint?.constant = 21
+//                 }
+//                 print("estimatedRect:", estimatedRect)
+//                 subTitleTextView.text = channelDescription
+//             }
 
-            // estimate height for subTitle
-            // estimate height for VideoCell (video+16+titleLabelHeight+8+subTitleLabelHeight+16)
+//             // estimate height for subTitle
+//             // estimate height for VideoCell (video+16+titleLabelHeight+8+subTitleLabelHeight+16)
             
-            if let thumbnailImageUrlString = videoItemSnippet?.thumbnails?.high?.url {
-                downloadImage(imageType: "thumbnail", urlString: thumbnailImageUrlString)
-            }
-        }
-    }
+//             if let thumbnailImageUrlString = videoItemSnippet?.thumbnails?.high?.url {
+//                 downloadImage(imageType: "thumbnail", urlString: thumbnailImageUrlString)
+//             }
+//         }
+//     }
     
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
@@ -186,29 +183,9 @@ class VideoCell: BaseCell {
             separaterView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
-    
-    func downloadImage(imageType: String, urlString: String) {
-        if let url = URL(string: urlString) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if error != nil {
-                    print(error!)
-                    return
-                }
-                guard let data = data else { return }
-                
-                DispatchQueue.main.async() {
-                    if imageType == "videoThumbnail" {
-                        self.thumbnailImageView.image = UIImage(data: data)
-                    } else if imageType == "profile_image" {
-                        self.profileImageView.image = UIImage(data: data)
-                    }
-                    self.delegate?.updateUI()
-                }
-            }.resume()
-        }
-    }
-    
 }
+
+
 ///========== cell not showing up bakup
 ////
 ////  VideoCell.swift
@@ -426,6 +403,13 @@ class VideoCell: BaseCell {
 //
 //}
 ////======= backup v1 ======
+=======
+
+
+
+
+////======= backup 4/9/18 ======
+
 ////
 ////  VideoCell.swift
 ////  AcuDragon

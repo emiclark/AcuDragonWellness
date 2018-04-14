@@ -108,10 +108,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         let videoInfo = ApiClient.videosArray.items![indexPath.row]
+
         dump(videoInfo)
-        cell.videoItem = videoInfo
+        //cell.videoItem = videoInfo
         
-        cell.titleLabel.text =  cell.videoItem.snippet?.title != nil ?  cell.videoItem.snippet?.title : "AcuDragon Wellness System"
+       // cell.titleLabel.text =  cell.videoItem.snippet?.title != nil ?  cell.videoItem.snippet?.title : "AcuDragon Wellness System"
+
         
         cell.subTitleTextView.text =  cell.videoItem.snippet?.description != nil ?  cell.videoItem.snippet?.description : "AcuDragon Wellness System"
         
