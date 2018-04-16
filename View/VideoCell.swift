@@ -32,7 +32,7 @@ class VideoCell: BaseCell {
                 titleLabel.text = " "
             }
 
-            if videoItemSnippet?.description != nil {
+            if videoItemSnippet?.description != "" {
                  subTitleTextView.text = videoItemSnippet?.description
             } else {
                 subTitleTextView.text = " "
@@ -68,7 +68,6 @@ class VideoCell: BaseCell {
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 16)
-//        label.backgroundColor = UIColor.yellow
         label.sizeToFit()
         return label
     }()
@@ -80,7 +79,6 @@ class VideoCell: BaseCell {
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
 //        label.backgroundColor = UIColor.cyan
-        label.text = "Will attempt to recover by breaking constraint <NSLayoutConstraint:0x600000288e30 UISV-spacing"
         label.sizeToFit()
         return label
     }()
@@ -110,10 +108,10 @@ class VideoCell: BaseCell {
         stackText.translatesAutoresizingMaskIntoConstraints = false
         stackText.axis = .vertical
         stackText.distribution = .fill
-        stackText.spacing = 4
         
         // stackText constraints
         stackText.isLayoutMarginsRelativeArrangement = true
+        stackText.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
         stackText.topAnchor.constraint(equalTo: stackImgAndText.topAnchor, constant: 4).isActive = true
         stackText.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12).isActive = true
         stackText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
@@ -124,6 +122,7 @@ class VideoCell: BaseCell {
         stackImgAndText.addArrangedSubview(stackText)
         stackImgAndText.translatesAutoresizingMaskIntoConstraints = false
         stackImgAndText.isLayoutMarginsRelativeArrangement = true
+        stackImgAndText.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         stackImgAndText.axis = .horizontal
         stackImgAndText.distribution = .fill
         
@@ -132,7 +131,7 @@ class VideoCell: BaseCell {
             stackImgAndText.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
             stackImgAndText.leadingAnchor.constraint(equalTo: thumbnailImageView.leadingAnchor),
             stackImgAndText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor),
-            stackImgAndText.bottomAnchor.constraint(equalTo: separaterView.topAnchor, constant: 20)
+            stackImgAndText.bottomAnchor.constraint(equalTo: separaterView.topAnchor)
         ])
         
         //thumbnail constraint
@@ -153,7 +152,7 @@ class VideoCell: BaseCell {
         
         // separator constraints
         NSLayoutConstraint.activate([
-            separaterView.topAnchor.constraint(equalTo: stackImgAndText.bottomAnchor, constant: -12),
+            separaterView.topAnchor.constraint(equalTo: stackImgAndText.bottomAnchor),
             separaterView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             separaterView.heightAnchor.constraint(equalToConstant: 1),
             separaterView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

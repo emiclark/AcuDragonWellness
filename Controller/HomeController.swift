@@ -115,11 +115,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.thumbnailImageView.image = thumbnailImage
         }
         
-        cell.profileImageView.image = #imageLiteral(resourceName: "dragon")
-        
-        cell.titleLabel.text =  cell.videoItemSnippet?.title != nil ?  cell.videoItemSnippet?.title : "AcuDragon Wellness System"
-
-        cell.subTitleTextView.text =  cell.videoItemSnippet?.description != nil ?  cell.videoItemSnippet?.description : " "
+//        cell.profileImageView.image = #imageLiteral(resourceName: "dragon")
+//        
+//        cell.titleLabel.text =  cell.videoItemSnippet?.title != nil ?  cell.videoItemSnippet?.title : "AcuDragon Wellness System"
+//
+//        cell.subTitleTextView.text =  cell.videoItemSnippet?.description != nil ?  cell.videoItemSnippet?.description : "    "
         
         return cell
     }
