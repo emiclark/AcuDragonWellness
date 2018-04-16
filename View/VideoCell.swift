@@ -26,19 +26,25 @@ class VideoCell: BaseCell {
                  downloadImage(imageType: "videoThumbnail", urlString: thumbnailUrlString)
             }
 
-            titleLabel.text = videoItemSnippet?.title
-
-            if let channelSubtitle = videoItemSnippet?.description {
-                 subTitleTextView.text = channelSubtitle
+            if videoItemSnippet?.title  != nil {
+                titleLabel.text = videoItemSnippet?.title
+            } else {
+                titleLabel.text = " "
             }
 
-            if let title = videoItemSnippet?.title {
-                 titleLabel.text = title
+            if videoItemSnippet?.description != nil {
+                 subTitleTextView.text = videoItemSnippet?.description
+            } else {
+                subTitleTextView.text = " "
             }
+
+//            if let title = videoItemSnippet?.title {
+//                 titleLabel.text = title
+//            }
             
-            if let channelDescription = videoItemSnippet?.description {
-                 subTitleTextView.text = channelDescription
-            }
+//            if let channelDescription = videoItemSnippet?.description {
+//                 subTitleTextView.text = channelDescription
+//            }
          }
      }
     
@@ -94,8 +100,6 @@ class VideoCell: BaseCell {
         return view
     }()
     
-    var titleLabelHeightConstraint: NSLayoutConstraint?
-    var subTitleLabelHeightConstraint: NSLayoutConstraint?
     var stackText = UIStackView()
     var stackImgText = UIStackView()
     
@@ -105,9 +109,6 @@ class VideoCell: BaseCell {
         addSubview(separaterView)
         addSubview(profileImageView)
         addSubview(stackText)
-        
-//        addSubview(titleLabel)
-//        addSubview(subTitleTextView)
 
         // add title and subtitle to stackText
         stackText.addArrangedSubview(titleLabel)
@@ -123,7 +124,7 @@ class VideoCell: BaseCell {
         stackText.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 4).isActive = true
         stackText.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12).isActive = true
         stackText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
-        stackText.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16).isActive = true
+        stackText.bottomAnchor.constraint(equalTo: separaterView.topAnchor, constant: -16).isActive = true
         
         //thumbnail constraint
         NSLayoutConstraint.activate([
@@ -142,25 +143,9 @@ class VideoCell: BaseCell {
             profileImageView.heightAnchor.constraint(equalToConstant: 44)
         ])
         
-//        // title constraints
-//         NSLayoutConstraint.activate([
-//            titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
-//            titleLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: 50),
-//            titleLabel.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0),
-//            titleLabel.bottomAnchor.constraint(equalTo: subTitleTextView.topAnchor, constant: 8)
-//        ])
-//
-//        // subtitle constraints
-//        NSLayoutConstraint.activate([
-//            subTitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-//            subTitleTextView.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: 50),
-//            subTitleTextView.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0),
-//            subTitleTextView.bottomAnchor.constraint(equalTo: separaterView.topAnchor, constant: -20)
-//        ])
-
         // separator constraints
         NSLayoutConstraint.activate([
-            separaterView.topAnchor.constraint(equalTo: subTitleTextView.bottomAnchor),
+            separaterView.topAnchor.constraint(equalTo: stackText.bottomAnchor, constant: -12),
             separaterView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             separaterView.heightAnchor.constraint(equalToConstant: 1),
             separaterView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -190,6 +175,58 @@ class VideoCell: BaseCell {
     }
 
 }
+//================================
+// bakup setupviews w/ stacktext
+//override func setupViews() {
+//    backgroundColor = UIColor.white
+//    addSubview(thumbnailImageView)
+//    addSubview(separaterView)
+//    addSubview(profileImageView)
+//    addSubview(stackText)
+//
+//    // add title and subtitle to stackText
+//    stackText.addArrangedSubview(titleLabel)
+//    stackText.addArrangedSubview(subTitleTextView)
+//    stackText.translatesAutoresizingMaskIntoConstraints = false
+//    stackText.axis = .vertical
+//    stackText.distribution = .fill
+//    stackText.spacing = 4
+//
+//    // stackText constraints
+//    stackText.isLayoutMarginsRelativeArrangement = true
+//    stackText.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//    stackText.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 4).isActive = true
+//    stackText.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12).isActive = true
+//    stackText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
+//    stackText.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16).isActive = true
+//
+//    //thumbnail constraint
+//    NSLayoutConstraint.activate([
+//        thumbnailImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+//        thumbnailImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+//        thumbnailImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+//        thumbnailImageView.heightAnchor.constraint(equalToConstant: 200),
+//        thumbnailImageView.bottomAnchor.constraint(equalTo: self.titleLabel.topAnchor, constant: -8)
+//        ])
+//
+//    //profile image constraint
+//    NSLayoutConstraint.activate([
+//        profileImageView.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
+//        profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+//        profileImageView.widthAnchor.constraint(equalToConstant: 44),
+//        profileImageView.heightAnchor.constraint(equalToConstant: 44)
+//        ])
+//
+//    // separator constraints
+//    NSLayoutConstraint.activate([
+//        separaterView.topAnchor.constraint(equalTo: subTitleTextView.bottomAnchor),
+//        separaterView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+//        separaterView.heightAnchor.constraint(equalToConstant: 1),
+//        separaterView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//        separaterView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+//        ])
+//}
+
 //============================================
 // backup 4/15 b4 stackviews
 ////
