@@ -37,14 +37,6 @@ class VideoCell: BaseCell {
             } else {
                 subTitleTextView.text = " "
             }
-
-//            if let title = videoItemSnippet?.title {
-//                 titleLabel.text = title
-//            }
-            
-//            if let channelDescription = videoItemSnippet?.description {
-//                 subTitleTextView.text = channelDescription
-//            }
          }
      }
     
@@ -76,8 +68,7 @@ class VideoCell: BaseCell {
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.frame.size.height = 20
-        label.backgroundColor = UIColor.yellow
+//        label.backgroundColor = UIColor.yellow
         label.sizeToFit()
         return label
     }()
@@ -86,9 +77,10 @@ class VideoCell: BaseCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.cyan
+//        label.backgroundColor = UIColor.cyan
+        label.text = "Will attempt to recover by breaking constraint <NSLayoutConstraint:0x600000288e30 UISV-spacing"
         label.sizeToFit()
         return label
     }()
@@ -101,14 +93,16 @@ class VideoCell: BaseCell {
     }()
     
     var stackText = UIStackView()
-    var stackImgText = UIStackView()
+    var stackImgAndText = UIStackView()
     
     override func setupViews() {
         backgroundColor = UIColor.white
         addSubview(thumbnailImageView)
         addSubview(separaterView)
         addSubview(profileImageView)
+        addSubview(stackImgAndText)
         addSubview(stackText)
+        
 
         // add title and subtitle to stackText
         stackText.addArrangedSubview(titleLabel)
@@ -124,7 +118,23 @@ class VideoCell: BaseCell {
         stackText.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 4).isActive = true
         stackText.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12).isActive = true
         stackText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
-        stackText.bottomAnchor.constraint(equalTo: separaterView.topAnchor, constant: -16).isActive = true
+        stackText.bottomAnchor.constraint(equalTo: separaterView.topAnchor).isActive = true
+        
+        // add profile image and stackViewText to stackImgAndText
+        stackImgAndText.addArrangedSubview(profileImageView)
+        stackImgAndText.addArrangedSubview(stackText)
+        stackImgAndText.translatesAutoresizingMaskIntoConstraints = false
+        stackImgAndText.isLayoutMarginsRelativeArrangement = true
+        stackImgAndText.axis = .horizontal
+        stackImgAndText.distribution = .fill
+        
+        // stackImgAndText constraints
+        NSLayoutConstraint.activate([
+            stackImgAndText.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
+            stackImgAndText.leadingAnchor.constraint(equalTo: thumbnailImageView.leadingAnchor),
+            stackImgAndText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor),
+            stackImgAndText.bottomAnchor.constraint(equalTo: separaterView.topAnchor, constant: 20)
+        ])
         
         //thumbnail constraint
         NSLayoutConstraint.activate([
@@ -145,7 +155,7 @@ class VideoCell: BaseCell {
         
         // separator constraints
         NSLayoutConstraint.activate([
-            separaterView.topAnchor.constraint(equalTo: stackText.bottomAnchor, constant: -12),
+            separaterView.topAnchor.constraint(equalTo: stackImgAndText.bottomAnchor, constant: -12),
             separaterView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             separaterView.heightAnchor.constraint(equalToConstant: 1),
             separaterView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
