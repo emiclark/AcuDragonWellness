@@ -45,7 +45,7 @@ class ApiClient {
 
             do {
                 ApiClient.videosArray = try JSONDecoder().decode(Video.self, from: data)
-                dump(ApiClient.videosArray)
+//                dump(ApiClient.videosArray)
                 completion(ApiClient.videosArray)
 
             } catch let error {
