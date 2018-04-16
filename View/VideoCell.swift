@@ -114,13 +114,12 @@ class VideoCell: BaseCell {
         
         // stackText constraints
         stackText.isLayoutMarginsRelativeArrangement = true
-        stackText.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        stackText.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 4).isActive = true
+        stackText.topAnchor.constraint(equalTo: stackImgAndText.topAnchor, constant: 4).isActive = true
         stackText.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12).isActive = true
         stackText.trailingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 0).isActive = true
         stackText.bottomAnchor.constraint(equalTo: separaterView.topAnchor).isActive = true
         
-        // add profile image and stackViewText to stackImgAndText
+        // stackImgAndText: add profile image and stackViewText
         stackImgAndText.addArrangedSubview(profileImageView)
         stackImgAndText.addArrangedSubview(stackText)
         stackImgAndText.translatesAutoresizingMaskIntoConstraints = false
@@ -147,8 +146,7 @@ class VideoCell: BaseCell {
         
         //profile image constraint
         NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
-            profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            profileImageView.leadingAnchor.constraint(equalTo: thumbnailImageView.leadingAnchor),
             profileImageView.widthAnchor.constraint(equalToConstant: 44),
             profileImageView.heightAnchor.constraint(equalToConstant: 44)
         ])
