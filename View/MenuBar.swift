@@ -79,15 +79,17 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
         // sync menu title and selected cell highlighted
         
         let selectedIndexPath = indexPath
+        let menuTitleLabel: String
+        
         if selectedIndexPath.row == 0 {
             collectionview.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition(rawValue: 0))
-            let menuTitleLabel =  menuTitle[selectedIndexPath.row]
+            menuTitleLabel =  menuTitle[selectedIndexPath.row]
             
         } else {
             collectionview.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition(rawValue: 1))
-            let menuTitleLabel =  menuTitle[selectedIndexPath.row]
+            menuTitleLabel =  menuTitle[selectedIndexPath.row]
         }
-
+        print("menuTitleLabel: \(menuTitleLabel)")
         
     }
     

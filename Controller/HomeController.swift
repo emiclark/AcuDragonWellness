@@ -31,6 +31,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         apiClient.delegate = self
 
         startActivityIndicator()
+        print("============================\n")
+        
         setupViewController()
         self.apiClient.fetchVideos(pageNum: pageNum)
 
@@ -107,6 +109,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         
         cell.videoItemSnippet = ApiClient.videosArray.items![indexPath.row].snippet
@@ -126,7 +129,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = (view.frame.width - 16 - 16) * 9 / 16
-        return CGSize(width: view.frame.width, height: height + 16 + 68)
+        return CGSize(width: view.frame.width, height: height + 16 + 20)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -138,6 +141,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         self.activityIndicator.color = .blue
         self.activityIndicator.center = view.center
+        self.activityIndicator.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 50)
         self.activityIndicator.hidesWhenStopped = false
         self.activityIndicator.startAnimating()
         view.addSubview(self.activityIndicator)
