@@ -68,6 +68,7 @@ class VideoCell: BaseCell {
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.backgroundColor = UIColor.yellow
         label.sizeToFit()
         return label
     }()
@@ -78,7 +79,7 @@ class VideoCell: BaseCell {
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.backgroundColor = UIColor.cyan
+        label.backgroundColor = UIColor.cyan
         label.sizeToFit()
         return label
     }()
@@ -93,8 +94,6 @@ class VideoCell: BaseCell {
     var stackText: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.distribution = .fill
         return stack
     }()
     
@@ -108,7 +107,6 @@ class VideoCell: BaseCell {
         addSubview(stackText)
         addSubview(thumbnailImageView)
         addSubview(profileImageView)
-        addSubview(stackText)
         addSubview(separaterView)
         
         //thumbnail constraint
@@ -116,7 +114,7 @@ class VideoCell: BaseCell {
             thumbnailImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             thumbnailImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             thumbnailImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            thumbnailImageView.heightAnchor.constraint(equalToConstant: ((self.frame.width - 16 - 16) * 9 / 16))
+            thumbnailImageView.heightAnchor.constraint(equalToConstant: ((self.frame.width - 16 - 16) * 9 / 16))  // (x * 9/16) creates aspect frame optimal for videos
         ])
         
         //profile image constraint
@@ -128,13 +126,16 @@ class VideoCell: BaseCell {
         ])
         
         // stack constraints
+        stackText.axis = .vertical
+        stackText.alignment = .top
+        stackText.distribution = .fill
         stackText.isLayoutMarginsRelativeArrangement = true
         
         titleLabel.anchor(top: stackText.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: subTitleTextView.topAnchor)
         
-        subTitleTextView.anchor(top: titleLabel.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: nil)
+        subTitleTextView.anchor(top: titleLabel.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: stackText.bottomAnchor)
         
-        stackText.anchor(top: thumbnailImageView.bottomAnchor, leading: profileImageView.trailingAnchor, trailing: thumbnailImageView.trailingAnchor, bottom: subTitleTextView.bottomAnchor, padding: .init(top: 10, left: 25, bottom: 0, right: 0))
+        stackText.anchor(top: thumbnailImageView.bottomAnchor, leading: profileImageView.trailingAnchor, trailing: thumbnailImageView.trailingAnchor, bottom: nil, padding: .init(top: 10, left: 25, bottom: 0, right: 0))
         
         // separator constraints
         NSLayoutConstraint.activate([
@@ -143,7 +144,6 @@ class VideoCell: BaseCell {
             separaterView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             separaterView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
-        
     }
     
     func downloadImage(imageType: String, urlString: String) {
@@ -166,7 +166,6 @@ class VideoCell: BaseCell {
             }.resume()
         }
     }
-
 }
 
 extension UIView {

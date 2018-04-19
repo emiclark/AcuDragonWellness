@@ -11,8 +11,7 @@ import UIKit
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     //    var videoItem = VideoCell()
-    
-    var stackHeight: CGFloat = 100.0
+    var cellHeight:CGFloat = 250
     
     let menuBar: MenuBar = {
         let mb = MenuBar()
@@ -120,19 +119,21 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.thumbnailImageView.image = thumbnailImage
         }
         
-//        cell.profileImageView.image = #imageLiteral(resourceName: "dragon")
-//        
-//        cell.titleLabel.text =  cell.videoItemSnippet?.title != nil ?  cell.videoItemSnippet?.title : "AcuDragon Wellness System"
-//
-//        cell.subTitleTextView.text =  cell.videoItemSnippet?.description != nil ?  cell.videoItemSnippet?.description : "    "
+        // calculate videoCell height
+        let TNsize = cell.thumbnailImageView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let L1size = cell.titleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let L2size = cell.subTitleTextView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let alpha = 16+10+16
+        cellHeight = TNsize.height + L1size.height + L2size.height + CGFloat(alpha)
+        print(cellHeight)
+        
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = (view.frame.width - 16 - 16) * 9 / 16
-        return CGSize(width: view.frame.width, height: (height + stackHeight))
-//        return CGSize(width: view.frame.width, height: height + 16 + 20)
+
+        return CGSize(width: view.frame.width, height: cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -149,6 +150,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.activityIndicator.startAnimating()
         view.addSubview(self.activityIndicator)
     }
+    
+    
+//    func getVideoCellHeight() -> CGFloat {
+//        let TNsize = cell.thumbnailImageView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//        let L1size = cell.titleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//        let L2size = cell.subTitleTextView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//        let alpha = 16+10+16
+//        let size = TNsize.height + L1size.height + L2size.height + CGFloat(alpha)
+//        return(size)
+//    }
 }
 
 // MARK:- Extensions
