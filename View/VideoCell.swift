@@ -102,32 +102,21 @@ class VideoCell: BaseCell {
         backgroundColor = UIColor.white
         
         // create stack and add title and subtitle
-        let viewInsideStack = UIView()
-        viewInsideStack.addSubview(titleLabel)
-        viewInsideStack.addSubview(subTitleTextView)
-        stackText.addArrangedSubview(viewInsideStack)
+        stackText.addArrangedSubview(titleLabel)
+        stackText.addArrangedSubview(subTitleTextView)
         
+        addSubview(stackText)
         addSubview(thumbnailImageView)
         addSubview(profileImageView)
         addSubview(stackText)
         addSubview(separaterView)
-        
-        stackText.isLayoutMarginsRelativeArrangement = true
-
-        titleLabel.anchor(top: viewInsideStack.topAnchor, leading: viewInsideStack.leadingAnchor, trailing: viewInsideStack.trailingAnchor, bottom: subTitleTextView.topAnchor)
-
-        subTitleTextView.anchor(top: titleLabel.topAnchor, leading: viewInsideStack.leadingAnchor, trailing: viewInsideStack.trailingAnchor, bottom: viewInsideStack.bottomAnchor)
-
-        viewInsideStack.anchor(top: stackText.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: stackText.bottomAnchor)
-
-        stackText.anchor(top: thumbnailImageView.bottomAnchor, leading: profileImageView.trailingAnchor, trailing: thumbnailImageView.trailingAnchor, bottom: separaterView.topAnchor, padding: .init(top: 10, left: 25, bottom: 0, right: 0))
         
         //thumbnail constraint
         NSLayoutConstraint.activate([
             thumbnailImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             thumbnailImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             thumbnailImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            thumbnailImageView.heightAnchor.constraint(equalToConstant: ((self.frame.width - 16 - 16) * 9 / 16) + 50)
+            thumbnailImageView.heightAnchor.constraint(equalToConstant: ((self.frame.width - 16 - 16) * 9 / 16))
         ])
         
         //profile image constraint
@@ -138,15 +127,23 @@ class VideoCell: BaseCell {
             profileImageView.heightAnchor.constraint(equalToConstant: 44)
         ])
         
-        // separator constraints
+        // stack constraints
+        stackText.isLayoutMarginsRelativeArrangement = true
         
+        titleLabel.anchor(top: stackText.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: subTitleTextView.topAnchor)
+        
+        subTitleTextView.anchor(top: titleLabel.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: nil)
+        
+        stackText.anchor(top: thumbnailImageView.bottomAnchor, leading: profileImageView.trailingAnchor, trailing: thumbnailImageView.trailingAnchor, bottom: subTitleTextView.bottomAnchor, padding: .init(top: 10, left: 25, bottom: 0, right: 0))
+        
+        // separator constraints
         NSLayoutConstraint.activate([
-            separaterView.topAnchor.constraint(equalTo: stackText.bottomAnchor),
             separaterView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             separaterView.heightAnchor.constraint(equalToConstant: 1),
             separaterView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             separaterView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
+        
     }
     
     func downloadImage(imageType: String, urlString: String) {

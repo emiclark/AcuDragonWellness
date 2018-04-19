@@ -12,6 +12,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     //    var videoItem = VideoCell()
     
+    var stackHeight: CGFloat = 100.0
+    
     let menuBar: MenuBar = {
         let mb = MenuBar()
         return mb
@@ -129,7 +131,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = (view.frame.width - 16 - 16) * 9 / 16
-        return CGSize(width: view.frame.width, height: height + 16 + 20)
+        return CGSize(width: view.frame.width, height: (height + stackHeight))
+//        return CGSize(width: view.frame.width, height: height + 16 + 20)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
