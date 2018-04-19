@@ -100,23 +100,27 @@ class VideoCell: BaseCell {
     
     override func setupViews() {
         backgroundColor = UIColor.white
+        
+        // create stack and add title and subtitle
+        let viewInsideStack = UIView()
+        viewInsideStack.addSubview(titleLabel)
+        viewInsideStack.addSubview(subTitleTextView)
+        stackText.addArrangedSubview(viewInsideStack)
+        
         addSubview(thumbnailImageView)
         addSubview(profileImageView)
         addSubview(stackText)
         addSubview(separaterView)
         
-        let viewInsideStack = UIView()
-        viewInsideStack.backgroundColor = .clear
-        viewInsideStack.addSubview(titleLabel)
-        viewInsideStack.addSubview(subTitleTextView)
-        stackText.addArrangedSubview(viewInsideStack)
-        
-        viewInsideStack.anchor(top: stackText.topAnchor, left: stackText.leadingAnchor, right: stackText.trailingAnchor, bottom: stackText.bottomAnchor)
-        
-        stackText.anchor(top: thumbnailImageView.bottomAnchor, left: profileImageView.trailingAnchor, right: thumbnailImageView.trailingAnchor, bottom: separaterView.topAnchor)
-        
         stackText.isLayoutMarginsRelativeArrangement = true
-        stackText.layoutMargins = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 0)
+
+        titleLabel.anchor(top: viewInsideStack.topAnchor, leading: viewInsideStack.leadingAnchor, trailing: viewInsideStack.trailingAnchor, bottom: subTitleTextView.topAnchor)
+
+        subTitleTextView.anchor(top: titleLabel.topAnchor, leading: viewInsideStack.leadingAnchor, trailing: viewInsideStack.trailingAnchor, bottom: viewInsideStack.bottomAnchor)
+
+        viewInsideStack.anchor(top: stackText.topAnchor, leading: stackText.leadingAnchor, trailing: stackText.trailingAnchor, bottom: stackText.bottomAnchor)
+
+        stackText.anchor(top: thumbnailImageView.bottomAnchor, leading: profileImageView.trailingAnchor, trailing: thumbnailImageView.trailingAnchor, bottom: separaterView.topAnchor, padding: .init(top: 10, left: 25, bottom: 0, right: 0))
         
         //thumbnail constraint
         NSLayoutConstraint.activate([
@@ -135,6 +139,7 @@ class VideoCell: BaseCell {
         ])
         
         // separator constraints
+        
         NSLayoutConstraint.activate([
             separaterView.topAnchor.constraint(equalTo: stackText.bottomAnchor),
             separaterView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -168,16 +173,26 @@ class VideoCell: BaseCell {
 }
 
 extension UIView {
-    func anchor(top: NSLayoutYAxisAnchor, left: NSLayoutXAxisAnchor, right: NSLayoutXAxisAnchor, bottom: NSLayoutYAxisAnchor) {
+    
+    func anchor(top: NSLayoutYAxisAnchor?, leading: NSLayoutXAxisAnchor?, trailing: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, padding: UIEdgeInsets = .zero) {
         
         translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            topAnchor.constraint(equalTo: topAnchor),
-            leadingAnchor.constraint(equalTo: left),
-            trailingAnchor.constraint(equalTo: right),
-            bottomAnchor.constraint(equalTo: bottom)
-        ])
         
+        if let top = top {
+            topAnchor.constraint(equalTo: top, constant: padding.top).isActive = true
+        }
+        
+        if let leading = leading {
+            leadingAnchor.constraint(equalTo: leading, constant: padding.left).isActive = true
+        }
+        
+        if let trailing = trailing {
+            trailingAnchor.constraint(equalTo: trailing, constant: -padding.right).isActive = true
+        }
+        
+        if let bottom = bottom {
+            bottomAnchor.constraint(equalTo: bottom, constant: -padding.bottom).isActive = true
+        }
     }
 }
 
