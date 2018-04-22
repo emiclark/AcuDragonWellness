@@ -10,8 +10,8 @@ import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    //    var videoItem = VideoCell()
-    var cellHeight:CGFloat = 250
+    var cellHeight: CGFloat?
+    var emptyState = true
     
     let menuBar: MenuBar = {
         let mb = MenuBar()
@@ -25,6 +25,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // MARK:- View Methods
     override func viewWillAppear(_ animated: Bool) {
         initializeVideoModelForEmptyState()
+        
     }
     
     override func viewDidLoad() {
@@ -36,14 +37,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         setupViewController()
         self.apiClient.fetchVideos(pageNum: pageNum)
-
+        
     }
     
     // MARK:- Setup/Initialization Methods
     func initializeVideoModelForEmptyState() {
         
         // create empty video array for empty state
-        let eva = Video()
+        let eva = Video() // video array initialized for empty state
         eva.etag = " "
         eva.items = [Items]()
         
@@ -114,26 +115,23 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         
         cell.videoItemSnippet = ApiClient.videosArray.items![indexPath.row].snippet
-        
         apiClient.downloadImage(urlString: (cell.videoItemSnippet?.thumbnails?.high?.url!)!) { (thumbnailImage) in
             cell.thumbnailImageView.image = thumbnailImage
         }
         
-        // calculate videoCell height
-        let TNsize = cell.thumbnailImageView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        let L1size = cell.titleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        let L2size = cell.subTitleTextView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        let alpha = 16+10+16
-        cellHeight = TNsize.height + L1size.height + L2size.height + CGFloat(alpha)
-        print(cellHeight)
-        
+        // calculate videoCell height and set cellHeight property
+        setContentViewHeight(cell: cell)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        return CGSize(width: view.frame.width, height: cellHeight)
+        if emptyState {
+            cellHeight = 295
+            emptyState = false
+        }
+        
+        return CGSize(width: view.frame.width, height: cellHeight!)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -151,15 +149,21 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         view.addSubview(self.activityIndicator)
     }
     
-    
-//    func getVideoCellHeight() -> CGFloat {
-//        let TNsize = cell.thumbnailImageView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-//        let L1size = cell.titleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-//        let L2size = cell.subTitleTextView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-//        let alpha = 16+10+16
-//        let size = TNsize.height + L1size.height + L2size.height + CGFloat(alpha)
-//        return(size)
-//    }
+    // calculate contentview height
+    func setContentViewHeight(cell: VideoCell) {
+        // returns cell height by calculating vertical heights and paddings of all objects
+        
+        let TNsize = cell.thumbnailImageView.systemLayoutSizeFitting(UICollectionViewFlowLayoutAutomaticSize)
+        let Ssize = cell.stackText.systemLayoutSizeFitting(UICollectionViewFlowLayoutAutomaticSize)
+        let L1size = cell.titleLabel.systemLayoutSizeFitting(UICollectionViewFlowLayoutAutomaticSize)
+        let L2size = cell.subTitleTextView.systemLayoutSizeFitting(UICollectionViewFlowLayoutAutomaticSize)
+
+        // sum of all padding between videoCell objects
+        let alpha = 16+10+16
+        let size = TNsize.height + Ssize.height + CGFloat(alpha)
+        print("\ncellHeight: \(cellHeight!), size: \(size):, Thumb:\(TNsize), stackSize: \(Ssize), alpha: \(alpha), - [l1:\(L1size), l2:\(L2size)]")
+        cellHeight = CGFloat(size)
+    }
 }
 
 // MARK:- Extensions
@@ -171,3 +175,76 @@ extension HomeController : reloadDataDelegate {
     }
 }
 
+
+//========
+
+//========= attempt to calculate cell height - doesn't set cellHeight correctly ==========
+//    func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+////        setNeedsLayout()
+////        layoutIfNeeded()
+//
+//        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+//        var newFrame = layoutAttributes.frame
+//        // note: don't change the width
+//        newFrame.size.height = ceil(size.height)
+//        layoutAttributes.frame = newFrame
+//        return layoutAttributes
+//    }
+
+
+//    // calculate contentview height
+//    func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+//
+//        let size = cell.contentView.systemLayoutSizeFitting(layoutAttributes.size)
+//        var newFrame = layoutAttributes.frame
+//        // note: don't change the width
+//        newFrame.size.height = ceil(size.height)
+//        layoutAttributes.frame = newFrame
+//        return layoutAttributes
+//    }
+
+
+
+
+//func getVideoCellHeight(cell: VideoCell) {
+//    // returns cell height by calculating vertical heights and paddings of all objects
+//    let TNsize = cell.thumbnailImageView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//    let Ssize = cell.stackText.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//    //        let L1size = cell.titleLabel.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//    //        let L2size = cell.subTitleTextView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+//    // sum of all padding between videoCell objects
+//    let alpha = 16+10+16
+//    let size = TNsize.height + Ssize.height + CGFloat(alpha)
+//    //        let size = TNsize.height + L1size.height + L2size.height + CGFloat(alpha)
+//    //        print(TNsize,L1size,L2size,alpha)
+//    print("size: \(size)::, \(TNsize),\(Ssize),\(alpha)")
+//    cellHeight = CGFloat(size)
+//}
+
+
+
+//func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//    let imageShowingWidth: CGFloat = self.view.frame.width / CGFloat(self.howManyImageShowing)
+//
+//    let labelName = "@\(self.tweetShowing[indexPath.row].user.screenName) (\(self.tweetShowing[indexPath.row].user.name))"
+//    let labelNameFont: UIFont = UIFont(name: "PingFangTC-Semibold", size: 16)!
+//    let labelNameWidth: CGFloat = self.view.frame.width - YourWidthOffSet// (YourWidthOffSet include all images' width and all margins)
+//    let labelNameHeight: CGFloat = self.getHeightForLable(labelWidth: labelNameWidth, labelText: labelName, labelFont: labelNameFont)
+//
+//    let labelContentFont: UIFont = UIFont(name: "PingFangTC-Regular", size: 16)!
+//    let labelContentHeight: CGFloat = self.getHeightForLable(labelWidth: labelNameWidth, numberOfLines: 0, labelText: self.tweetShowing[indexPath.row].text, labelFont: labelContentFont)
+//
+//    let cellHeight: CGFloat = labelNameHeight + labelContentHeight + YourHeightOffSet // (YourHeightOffSet means all margins)
+//
+//    return self.typeControl.selectedSegmentIndex == 0 ? CGSize(width: self.view.frame.width, height: cellHeight) : CGSize(width: imageShowingWidth, height: imageShowingWidth)
+//}
+//
+//func getHeightForLable(labelWidth: CGFloat, numberOfLines: Int = 1, labelText: String, labelFont: UIFont) -> CGFloat {
+//    let tempLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelWidth, height: CGFloat.greatestFiniteMagnitude))
+//    tempLabel.numberOfLines = numberOfLines
+//    tempLabel.text = labelText
+//    tempLabel.font = labelFont
+//    tempLabel.sizeToFit()
+//    return tempLabel.frame.height
+//}
+//
